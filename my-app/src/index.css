@@ -25,6 +25,11 @@ body, html {
   padding: 0;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols&display=swap');
+
+.font-rupee {
+  font-family: 'Noto Sans Symbols', sans-serif;
+}
 
 /* RAPS-style custom slick dots */
 .slick-dots li button:before {

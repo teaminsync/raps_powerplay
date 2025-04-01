@@ -93,42 +93,31 @@ const OfferCard = ({ offer }) => {
       viewport={{ once: true, amount: 0.5 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <h3 className="text-3xl md:text-4xl font-bold text-[#e87d0e] mb-6">
+      {/* Apply max-w-full to avoid the text from overflowing */}
+      <h3 className="text-3xl md:text-4xl font-bold text-[#e87d0e] mb-6 truncate max-w-full">
         {offer.title}
       </h3>
 
       <div className="space-y-6">
         <div className="grid grid-cols-3 gap-4 text-[0.7rem] sm:text-[1rem] md:text-[1.125rem]">
           {/* Columns */}
-          <div className="font-semibold text-[#1c140f] text-left pl-4 pr-2 border-r-2 border-[#1c140f] bg-[#f5c970] rounded-lg p-4 table-hover shadow-lg"
-            style={{
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
-            }}>
+          <div className="font-semibold text-[#1c140f] text-left pl-4 pr-2 border-r-2 border-[#1c140f] bg-[#f5c970] rounded-lg p-4 table-hover shadow-lg">
             No of Controllers
           </div>
-          <div className="font-semibold text-[#1c140f] text-left pl-4 pr-2 border-r-2 border-[#1c140f] bg-[#f5c970] rounded-lg p-4 table-hover shadow-lg"
-            style={{
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
-            }}>
-            Standard Pricing ({nonMemberData.unit})
+          <div className="font-semibold text-[#1c140f] text-left pl-4 pr-2 border-r-2 border-[#1c140f] bg-[#f5c970] rounded-lg p-4 table-hover shadow-lg">
+            Standard Pricing (<span className="font-rupee">₹</span>/{nonMemberData.unit.split('/')[1]})
           </div>
-          <div className="relative font-semibold text-[#1c140f] text-left pl-4 pr-2 border-r-2 border-[#1c140f] bg-[#f5c970] rounded-lg p-4 table-hover shadow-lg"
-            style={{
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
-            }}>
-            <span className="absolute top-0 right-0 bg-[#e87d0e] text-white text-xs font-bold py-0.5 px-2 transform rotate-45 origin-top-right -translate-y-1/3 translate-x-1/2 rounded-bl-xl">
+          <div className="relative font-semibold text-[#1c140f] text-left pl-4 pr-2 border-r-2 border-[#1c140f] bg-[#f5c970] rounded-lg p-4 table-hover shadow-lg">
+            <span className="absolute top-0 right-0 bg-[#e87d0e] text-white text-[0.6rem] sm:text-[0.7rem] md:text-[0.7rem] font-bold py-0.5 px-2 transform rotate-45 origin-top-right -translate-y-1/3 translate-x-1/2 rounded-bl-xl">
               Membership
             </span>
-            Member Pricing ({memberData.unit})
+            Member Pricing (<span className="font-rupee">₹</span>/{nonMemberData.unit.split('/')[1]})
           </div>
 
           {memberData.pricing.map((item, idx) => (
             <React.Fragment key={idx}>
               <motion.div
                 className="p-2 text-left flex items-center bg-[#f9e1b2] rounded-lg min-h-full shadow-lg"
-                style={{
-                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
-                }}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
@@ -137,51 +126,42 @@ const OfferCard = ({ offer }) => {
               </motion.div>
 
               <motion.div
-                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-black bg-[#f9e1b2] rounded-lg min-h-full shadow-lg"
-                style={{
-                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
-                }}
+                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-black bg-[#f9e1b2] rounded-lg min-h-full shadow-lg overflow-hidden text-ellipsis whitespace-nowrap"
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                ₹{nonMemberData.pricing[idx].price}
+                <span className="font-rupee">₹</span>{nonMemberData.pricing[idx].price}
               </motion.div>
 
               <motion.div
-                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-black bg-[#f9e1b2] rounded-lg min-h-full shadow-lg"
-                style={{
-                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
-                }}
+                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-black bg-[#f9e1b2] rounded-lg min-h-full shadow-lg overflow-hidden text-ellipsis whitespace-nowrap"
                 initial={{ opacity: 0, x: 10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
-                ₹{item.price}
+                <span className="font-rupee">₹</span>{item.price}
               </motion.div>
             </React.Fragment>
           ))}
         </div>
       </div>
-
     </motion.div>
   );
 };
 
 const Offer = () => {
-
   const textVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
   };
 
   const navigate = useNavigate();
-  
-    const handleNavigation = (path) => {
-      navigate(path);
-      window.scrollTo(0, 800); // Scrolls to the top of the page
-    };
-  
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    window.scrollTo(0, 800); // Scrolls to the top of the page
+  };
 
   return (
     <motion.div
@@ -206,16 +186,16 @@ const Offer = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-8">
           {memberOffers.map((offer, i) => (
             <OfferCard key={i} offer={offer} />
           ))}
         </div>
 
-        <motion.div variants={textVariants} className="mt-7 text-center"> {/* mt-4 for top margin */}
-          <button 
-          onClick={() => handleNavigation('/contact')}
-          className="custom-button w-fit">
+        <motion.div variants={textVariants} className="mt-7 text-center">
+          <button
+            onClick={() => handleNavigation('/contact')}
+            className="custom-button w-fit">
             Enquire Now
           </button>
         </motion.div>

@@ -14,7 +14,7 @@ const App = () => {
     <div className="bg-white overflow-hidden [background:linear-gradient(181deg,rgba(0,0,0,1)_0%,rgba(74,40,0,1)_100%)] min-h-screen">
       <ToastContainer />
       <Navbar />
-      <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] pt-[80px]">
+      <div className="px-0 sm:px-[0vw] md:px-[0vw] lg:px-[0vw] pt-[80px]">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

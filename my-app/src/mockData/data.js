@@ -22,7 +22,7 @@ export const TestimonialsData = [
   {
     id: 3,
     name: "Saakshi Kadakuntla",
-    position: "Big Sister & Party Host",
+    position: "Elder Sister & Party Host",
     rating: 4.9,
     text: "“Rented a PlayStation for my little brother’s birthday, and it went great! The kids loved it, setup was smooth, and RAPS made everything super convenient.”",
     img: assets.sakshi,
