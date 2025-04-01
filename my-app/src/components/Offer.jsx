@@ -98,7 +98,7 @@ const OfferCard = ({ offer }) => {
       </h3>
 
       <div className="space-y-6">
-        <div className="grid grid-cols-3 gap-4 text-sm md:text-lg">
+        <div className="grid grid-cols-3 gap-4 text-[0.7rem] sm:text-[1rem] md:text-[1.125rem]">
           {/* Columns */}
           <div className="font-semibold text-[#1c140f] text-left pl-4 pr-2 border-r-2 border-[#1c140f] bg-[#f5c970] rounded-lg p-4 table-hover shadow-lg"
             style={{
@@ -137,7 +137,7 @@ const OfferCard = ({ offer }) => {
               </motion.div>
 
               <motion.div
-                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-[#e87d0e] bg-[#f9e1b2] rounded-lg min-h-full shadow-lg"
+                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-black bg-[#f9e1b2] rounded-lg min-h-full shadow-lg"
                 style={{
                   boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
                 }}
@@ -149,7 +149,7 @@ const OfferCard = ({ offer }) => {
               </motion.div>
 
               <motion.div
-                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-[#e87d0e] bg-[#f9e1b2] rounded-lg min-h-full shadow-lg"
+                className="p-2 flex items-center justify-center text-base md:text-xl font-semibold text-black bg-[#f9e1b2] rounded-lg min-h-full shadow-lg"
                 style={{
                   boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)' // Adjusted shadow for increased intensity
                 }}
