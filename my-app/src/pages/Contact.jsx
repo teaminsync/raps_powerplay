@@ -196,13 +196,13 @@ const Contact = () => {
           ENQUIRY FORM
         </motion.h3>
 
-        <motion.form 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.3, ease: "easeInOut" }}
-        onSubmit={handleSubmit} className="flex flex-col space-y-6">
+        <motion.form
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 0.3, ease: "easeInOut" }}
+          onSubmit={handleSubmit} className="flex flex-col space-y-6">
           {/* Name Inputs */}
-          <div className="flex gap-4">
+          <div className="flex gap-6 flex-col md:flex-row">
             <input
               type="text"
               name="firstName"
@@ -223,7 +223,7 @@ const Contact = () => {
             />
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-6 flex-col md:flex-row">
             {/* Email Input */}
             <input
               type="email"
@@ -231,7 +231,7 @@ const Contact = () => {
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
-              className="w-2/3 p-4 bg-transparent border-2 border-solid border-gray-400 rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#e87d0e] focus:border-[#e87d0e] transition-all duration-300 font-poppins font-semibold"
+              className="w-full md:w-2/3 p-4 bg-transparent border-2 border-solid border-gray-400 rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#e87d0e] focus:border-[#e87d0e] transition-all duration-300 font-poppins font-semibold"
               required
             />
 
@@ -242,7 +242,7 @@ const Contact = () => {
               placeholder="Phone Number"
               value={formData.phone}
               onChange={handleChange}
-              className="w-1/3 p-4 bg-transparent border-2 border-solid border-gray-400 rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#e87d0e] focus:border-[#e87d0e] transition-all duration-300 font-poppins font-semibold"
+              className="w-full md:w-1/3 p-4 bg-transparent border-2 border-solid border-gray-400 rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#e87d0e] focus:border-[#e87d0e] transition-all duration-300 font-poppins font-semibold"
               required
             />
           </div>
@@ -278,7 +278,7 @@ const Contact = () => {
 
             <label className="flex items-center space-x-2 text-white">
               <input
-              type="radio"
+                type="radio"
                 name="rentalDuration"
                 value="Monthly"
                 checked={formData.rentalDuration === "Monthly"}
@@ -363,7 +363,7 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-6 flex-col md:flex-row">
             {/* Location (Optional) */}
             <input
               type="text"
@@ -384,8 +384,8 @@ const Contact = () => {
               required
             >
               <option value="" className="text-black">How did you hear about us?</option>
-              <option value="social_media" className="text-black">Social Media</option>
               <option value="word_of_mouth" className="text-black">Word of Mouth</option>
+              <option value="social_media" className="text-black">Social Media</option>
               <option value="google_search" className="text-black">Google Search</option>
               <option value="other" className="text-black">Other</option>
             </select>
