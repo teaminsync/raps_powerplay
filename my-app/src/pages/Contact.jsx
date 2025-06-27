@@ -133,7 +133,7 @@ const Contact = () => {
             >
               <div className="flex items-center space-x-2 text-sm sm:text-base">
                 <img src={phone} alt="Phone Icon" className="w-6 h-6" />
-                <span>+91 93217 32794</span>
+                <span>+91 90822 01911</span>
               </div>
             </a>
 
