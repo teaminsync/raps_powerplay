@@ -118,11 +118,10 @@ const Terms = () => {
               For inquiries, disputes, or concerns, please reach out via:
             </p>
             <ul className="list-disc ml-6 text-lg mb-6">
-              <li>Email: support@rapspowerplay.com</li>
-              <li>Phone: +91 93217 32794</li>
+              <li>Email: raps.powerplay@gmail.com</li>
+              <li>Phone: +91 9082201911</li>
               <li>Location: Mumbai, India</li>
             </ul>
-            <p className="text-lg mt-4">Last updated: 24/03/2025</p>
           </div>
         </motion.div>
       </div>
