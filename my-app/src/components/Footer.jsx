@@ -68,7 +68,7 @@ const Footer = () => {
               </li>
                             <li>
                 <button
-                  onClick={() => handleNavigation('/pp')}
+                  onClick={() => handleNavigation('/privacy')}
                   className="text-sm sm:text-base text-white no-underline hover:text-[#e87d0e] bg-transparent border-none transition-all duration-300 ease-in-out cursor-pointer"
                 >
                   Privacy Policy
