@@ -66,6 +66,14 @@ const Footer = () => {
                   Terms & Conditions
                 </button>
               </li>
+                            <li>
+                <button
+                  onClick={() => handleNavigation('/pp')}
+                  className="text-sm sm:text-base text-white no-underline hover:text-[#e87d0e] bg-transparent border-none transition-all duration-300 ease-in-out cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -76,20 +84,20 @@ const Footer = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-1">
               {/* Phone */}
               <a
-                href="https://wa.me/+919321732794"
+                href="https://wa.me/+919082201911"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white no-underline hover:text-[#e87d0e] bg-transparent border-none transition-all duration-300 ease-in-out cursor-pointer"
               >
                 <div className="flex items-center space-x-2 text-sm sm:text-base">
                   <img src={phone} alt="Phone Icon" className="w-4 h-4" />
-                  <span>+91 93217 32794</span>
+                  <span>+91 90822 01911</span>
                 </div>
               </a>
 
               {/* Gmail */}
               <a
-                href="mailto:support@rapspowerplay.com"
+                href="mailto:raps.powerplay@gmail.com"
                 className="text-white no-underline hover:text-[#e87d0e] bg-transparent border-none transition-all duration-300 ease-in-out cursor-pointer"
               >
                 <div className="flex items-center space-x-2 text-sm sm:text-base">
