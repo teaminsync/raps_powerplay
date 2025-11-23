@@ -1,0 +1,25 @@
+<svg width="600" height="420" viewBox="0 0 600 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- ORANGE BLOB -->
+  <ellipse cx="180" cy="300" rx="120" ry="90" fill="#FF6A00"/>
+  <circle cx="150" cy="280" r="8" fill="#000"/>
+  <circle cx="210" cy="280" r="8" fill="#000"/>
+  <path d="M150 310 Q180 330 210 310" stroke="#000" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- PURPLE TALL RECTANGLE -->
+  <rect x="330" y="80" width="90" height="200" rx="20" fill="#7C3AED"/>
+  <circle cx="360" cy="120" r="7" fill="#000"/>
+  <circle cx="395" cy="120" r="7" fill="#000"/>
+  <path d="M360 150 Q380 165 395 150" stroke="#000" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- BLACK SHORT RECTANGLE -->
+  <rect x="290" y="180" width="70" height="150" rx="16" fill="#111"/>
+  <circle cx="315" cy="220" r="6" fill="#fff"/>
+  <circle cx="345" cy="220" r="6" fill="#fff"/>
+
+  <!-- YELLOW CHARACTER -->
+  <rect x="410" y="210" width="120" height="110" rx="55" fill="#F4D000"/>
+  <circle cx="450" cy="250" r="7" fill="#000"/>
+  <path d="M480 250 L510 250" stroke="#000" stroke-width="7" stroke-linecap="round"/>
+
+</svg>

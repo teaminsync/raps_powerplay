@@ -1,23 +1,45 @@
 // src/lib/api.js
 import axios from "axios";
 
-// Normalize and default to 5000 (not 5050)
-export const API_URL =
-  (import.meta.env.VITE_API_URL
-    ? String(import.meta.env.VITE_API_URL).replace(/\/$/, "")
-    : "") || "http://localhost:5000";
+/**
+ * Normalize base URL:
+ * - Removes trailing slashes
+ * - Falls back to localhost in dev
+ * - Handles Render / Vercel correctly
+ */
+const cleanBaseURL = () => {
+  let url = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
+  // Remove trailing slash
+  url = url.replace(/\/+$/, "");
+
+  return url;
+};
+
+export const API_URL = cleanBaseURL();
+
+/**
+ * Axios instance to use across the project
+ */
 export const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // keep true if you rely on cookies/sessions
+  withCredentials: true, // Keep for JWT cookies if needed
 });
 
-// Build absolute asset URL from a relative path
-export const assetURL = (p) => {
-  const s = String(p || "").trim();
-  if (!s) return "";
-  if (/^https?:\/\//i.test(s)) return s;
-  return `${API_URL}/${s.replace(/^\//, "")}`;
+/**
+ * Build absolute asset URL from relative paths
+ * Example:
+ *   assetURL("Images/Aadhaar/file.png")
+ */
+export const assetURL = (path) => {
+  if (!path) return "";
+
+  const p = String(path).trim();
+
+  // If already absolute (Cloudinary, S3, Google Storage, etc.)
+  if (/^https?:\/\//i.test(p)) return p;
+
+  return `${API_URL}/${p.replace(/^\//, "")}`;
 };
 
 export default api;
