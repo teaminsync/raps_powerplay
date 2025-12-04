@@ -122,7 +122,9 @@ const Terms = () => {
               <li>Phone: +91 93217 32794</li>
               <li>Location: Mumbai, India</li>
             </ul>
-            <p className="text-lg mt-4">Last updated: 24/03/2025</p>
+                        <p className="text-sm italic text-gray-400">
+              Last Updated: November 2025
+            </p>
           </div>
         </motion.div>
       </div>

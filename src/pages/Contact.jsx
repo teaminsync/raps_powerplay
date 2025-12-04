@@ -128,20 +128,20 @@ const Contact = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-8">
             {/* Phone */}
             <a
-              href="https://wa.me/+919321732794"
+              href="https://wa.me/+919082201911"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white no-underline hover:text-[#e87d0e] bg-transparent border-none transition-all duration-300 ease-in-out cursor-pointer"
             >
               <div className="flex items-center space-x-2 text-sm sm:text-base">
                 <img src={phone} alt="Phone Icon" className="w-6 h-6" />
-                <span>+91 93217 32794</span>
+                <span>+91 90822 01911</span>
               </div>
             </a>
 
             {/* Email */}
             <a
-              href="mailto:support@rapspowerplay.com"
+              href="mailto:raps.powerplay@gmail.com"
               className="text-white no-underline hover:text-[#e87d0e] bg-transparent border-none transition-all duration-300 ease-in-out cursor-pointer"
             >
               <div className="flex items-center space-x-2 text-sm sm:text-base">
@@ -152,14 +152,14 @@ const Contact = () => {
 
             {/* Instagram */}
             <a
-              href="https://www.instagram.com/raps.powerplay/"
+              href="https://www.instagram.com/rapspowerplay/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white no-underline hover:text-[#e87d0e] bg-transparent border-none transition-all duration-300 ease-in-out cursor-pointer"
             >
               <div className="flex items-center space-x-2 text-sm sm:text-base">
                 <img src={instagram} alt="Instagram Icon" className="w-6 h-6" />
-                <span>@raps.powerplay</span>
+                <span>@rapspowerplay</span>
               </div>
             </a>
 

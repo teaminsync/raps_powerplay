@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy.jsx";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -71,6 +72,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
 
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin" element={<Dashboard />} />
