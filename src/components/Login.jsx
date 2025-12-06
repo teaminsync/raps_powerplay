@@ -1,163 +1,194 @@
 // src/pages/login.jsx
-"use client"
+"use client";
 
-import { useState, useContext } from "react"
-import "../components/Login.css"
-import { Link, useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import { AuthContext } from "../context/AuthContext"
-import { api } from "../lib/api"
+import { useState, useRef, useEffect, useContext } from "react";
+import "../components/Login.css";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AuthContext } from "../context/AuthContext";
+import { api } from "../lib/api";
 
-const Login = ({ onSwitchToSignUp, onBack }) => {
-  const [formData, setFormData] = useState({ email: "", password: "" })
-  const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+const Login = ({ onSwitchToSignUp }) => {
+  const canvasRef = useRef(null);
+  const [ctx, setCtx] = useState(null);
 
-  const { login } = useContext(AuthContext)
-  const navigate = useNavigate()
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleInputChange = (e) => {
-    let { name, value } = e.target
-    if (name === "email") {
-      value = value.replace(/[^a-zA-Z0-9@._-]/g, "")
-    }
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }))
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  /* ==========================================================
+     RIPPLE ENGINE — WATER DROPLET EFFECT CANVAS
+  ========================================================== */
+/* ==========================================================
+   FULL-SCREEN RIPPLE ENGINE — WAVES SPREAD ACROSS VIEWPORT
+========================================================== */
+useEffect(() => {
+  const canvas = canvasRef.current;
+  const context = canvas.getContext("2d");
+
+  const resize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  let ripples = [];
+
+  function draw() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    ripples = ripples.filter((r) => r.radius < r.maxRadius);
+
+    ripples.forEach((r) => {
+      r.radius += r.speed;
+      r.opacity -= r.fade;
+
+      context.beginPath();
+      context.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+      context.strokeStyle = `rgba(255,120,40,${r.opacity})`;
+      context.lineWidth = 2;
+      context.shadowBlur = 35;
+      context.shadowColor = "rgba(255,120,40,0.5)";
+      context.stroke();
+    });
+
+    requestAnimationFrame(draw);
   }
 
-  const validateForm = () => {
-    const newErrors = {}
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address"
-    }
-    if (!formData.password) {
-      newErrors.password = "Password is required"
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
-    }
-    return newErrors
-  }
+  draw();
+
+  const createRipple = (x, y) => {
+    ripples.push({
+      x,
+      y,
+      radius: 2,
+      speed: 4.2,              // Faster wave expansion
+      opacity: 0.45,           // Stronger glow
+      fade: 0.0022,            // Slower fade → waves last longer
+      maxRadius: Math.max(canvas.width, canvas.height) * 1.4  // FULL SCREEN
+    });
+  };
+
+  const handleClick = (e) => createRipple(e.clientX, e.clientY);
+
+  window.addEventListener("click", handleClick);
+
+  return () => {
+    window.removeEventListener("click", handleClick);
+    window.removeEventListener("resize", resize);
+  };
+}, []);
+
+
+  /* ==========================================================
+     TYPE RIPPLE (each letter creates ripple)
+  ========================================================== */
+  const triggerTypeRipple = () => {
+    if (!ctx) return;
+    const x = window.innerWidth / 2;
+    const y = window.innerHeight / 2 + 100;
+
+    const rippleEvent = new Event("click");
+    rippleEvent.clientX = x;
+    rippleEvent.clientY = y;
+    window.dispatchEvent(rippleEvent);
+  };
+
+  /* ==========================================================
+     FORM HANDLERS
+  ========================================================== */
+  const handleChange = (e) => {
+    triggerTypeRipple();
+    const { name, value } = e.target;
+    setFormData((p) => ({ ...p, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const newErrors = validateForm()
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
-    }
+    e.preventDefault();
 
-    setLoading(true)
     try {
-      const { data } = await api.post("/user/login", formData)
-      login(data)
+      const { data } = await api.post("/user/login", formData);
+      login(data);
       if (data.success) {
-        navigate("/booking")
-        toast.success("Login successful")
-      } else {
-        toast.error(data.message || "Invalid credentials")
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message || "Login failed")
-    } finally {
-      setLoading(false)
+        toast.success("Logged in!");
+        navigate("/booking");
+      } else toast.error(data.message);
+    } catch {
+      toast.error("Login failed");
     }
-  }
+  };
 
   return (
-    <div className="login-page">
-      {/* Animated Background */}
-      <div className="login-animated-background">
-        <div className="login-bg-circle login-bg-circle-1"></div>
-        <div className="login-bg-circle login-bg-circle-2"></div>
-        <div className="login-bg-circle login-bg-circle-3"></div>
-      </div>
+    <div className="auth-page">
+      {/* RIPPLE BACKGROUND */}
+      <canvas id="rippleCanvas" ref={canvasRef}></canvas>
 
-      <div className="login-container">
-        <div className="login-card">
-          <button className="login-back-btn" onClick={onBack}>
-            <span>←</span> Back to Booking
-          </button>
+      {/* LOGIN CARD */}
+      <div className="auth-card">
 
-          <div className="login-header">
-            <div className="login-logo">
-              <span className="login-logo-text">Raps Powerplay</span>
-            </div>
-            <h2 className="login-title">Welcome Back</h2>
-            <p className="login-subtitle">Sign in to continue your gaming journey</p>
+        <h1 className="auth-brand">RAPS POWERPLAY</h1>
+        <h2 className="auth-title">Welcome Back</h2>
+        <p className="auth-subtitle">Access your gaming realm</p>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          {/* EMAIL */}
+          <div className="auth-input-group">
+            <label>Email</label>
+            <input
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              className="input"
+              value={formData.email}
+              onChange={handleChange}
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="login-form">
-            <div className="login-form-group">
-              <div className="login-input-wrapper">
-                <span className="login-input-icon">📧</span>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={errors.email ? "login-input error" : "login-input"}
-                />
-              </div>
-              {errors.email && <span className="login-error-text">{errors.email}</span>}
-            </div>
-
-            <div className="login-form-group">
-              <div className="login-input-wrapper">
-                <span className="login-input-icon">🔒</span>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className={errors.password ? "login-input error" : "login-input"}
-                />
-                <button type="button" className="login-password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? "🙈" : "👁️"}
-                </button>
-              </div>
-              {errors.password && <span className="login-error-text">{errors.password}</span>}
-            </div>
-
-            <div className="login-forgot-password">
-              <Link to={"/forgotPassEmail"}>
-                <button type="button" className="login-link-btn">
-                  Forgot Password? 🔑
-                </button>
-              </Link>
-            </div>
-
-            <button type="submit" className="login-btn" disabled={loading}>
-              {loading ? (
-                <div className="login-loading-content">
-                  <div className="login-spinner"></div>
-                  Signing In...
-                </div>
-              ) : (
-                <>
-                  <span className="login-btn-icon">🎮</span>
-                  Sign In
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="login-footer">
-            <p>
-              Don't have an account?
-              <button onClick={onSwitchToSignUp} className="login-link-btn">
-                Sign Up
+          {/* PASSWORD */}
+          <div className="auth-input-group">
+            <label>Password</label>
+            <div className="password-wrapper">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                className="input"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <button
+                type="button"
+                className="toggle-pass"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "Hide" : "Show"}
               </button>
-            </p>
+            </div>
           </div>
-        </div>
+
+          {/* FORGOT PASSWORD */}
+          <Link to="/forgotPassEmail" className="auth-link small">
+            Forgot password?
+          </Link>
+
+          <button className="auth-btn" type="submit">
+            Login
+          </button>
+        </form>
+
+        <p className="auth-footer">
+          Don’t have an account?
+          <button className="auth-link" onClick={onSwitchToSignUp}>
+            Sign Up
+          </button>
+        </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

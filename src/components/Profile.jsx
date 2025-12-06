@@ -1,104 +1,115 @@
 // src/components/Profile.jsx
-import React, { useRef, useContext } from 'react'
-import { ImCross } from 'react-icons/im'
-import { IoIosCamera } from 'react-icons/io'
-import "../style.css"
-import { AuthContext } from '../context/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
-import { api, assetURL } from '../lib/api'
+import React, { useRef, useContext } from "react";
+import { ImCross } from "react-icons/im";
+import { IoIosCamera } from "react-icons/io";
+import { AuthContext } from "../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+import { api, assetURL } from "../lib/api";
 
 function Profile({ userdp, setuserdp, profileimge }) {
-  const navigate = useNavigate()
-  const { profile, setprofile, logout, user } = useContext(AuthContext)
+  const navigate = useNavigate();
+  const { setprofile, logout, user } = useContext(AuthContext);
 
-  const myimg = useRef()
-  const inputfile = useRef()
+  const imgRef = useRef();
+  const inputFile = useRef();
 
   async function UpdateDP() {
     try {
-      const file = inputfile.current?.files?.[0]
-      if (!file) return
+      const file = inputFile.current?.files?.[0];
+      if (!file) return;
 
       // Local preview
-      const objectUrl = URL.createObjectURL(file)
-      if (myimg.current) myimg.current.src = objectUrl
-      if (profileimge?.current) profileimge.current.src = objectUrl
+      const previewURL = URL.createObjectURL(file);
+      imgRef.current.src = previewURL;
+      if (profileimge.current) profileimge.current.src = previewURL;
 
-      const formdata = new FormData()
-      formdata.append("DP", file)
+      const formData = new FormData();
+      formData.append("DP", file);
 
-      const { data } = await api.post(`/user/update_user_dp/${user._id}`, formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+      const { data } = await api.post(
+        `/user/update_user_dp/${user._id}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-      // Backend returns { success: true, DP: "Images/DP/filename" }
-      if (data?.success && data.DP && typeof setuserdp === "function") {
-        setuserdp(data.DP)
+      if (data?.success && typeof setuserdp === "function") {
+        setuserdp(data.DP);
       }
     } catch (e) {
-      console.warn("Update DP failed:", e?.response?.data?.message || e.message)
+      console.warn("DP Update Failed:", e.message);
     }
   }
 
-  const displayDp = userdp?.startsWith("http") ? userdp : assetURL(userdp || "")
+  const displayDp =
+    userdp?.startsWith("http") ? userdp : assetURL(userdp || "");
 
   return (
     <>
-      <div className="cont w-[370px] md:w-[400px] h-[400px] fixed flex flex-col items-center px-5 justify-start py-5 gap-2 top-[100px] right-[10px] md:right-[50px] z-30 border-3 rounded-md bg-transparent">
-        <ImCross
-          onClick={() => setprofile(false)}
-          className="font-bold text-2xl cursor-pointer text-white absolute right-[10px] top-[10px]"
-        />
-        <div className="flex justify-center items-center w-[100%] h-[100%] bg-[#302C27]">
-          <div className="bg-[#302C27] text-white shadow-lg rounded-2xl p-6 w-[100%] text-center">
-            <form encType="multipart/form-data" onSubmit={(e) => e.preventDefault()}>
-              <img
-                src={displayDp}
-                alt="User"
-                ref={myimg}
-                className="w-[120px] relative user-img1 h-[120px] pxmx-auto rounded-full border-4 border-red-700 shadow-lg"
-              />
-              <label htmlFor="myfile">
-                <IoIosCamera className="text-5xl z-40 absolute top-[128px] right-[148px]" />
-              </label>
-              <input
-                type="file"
-                ref={inputfile}
-                onChange={UpdateDP}
-                name="file"
-                className="hidden"
-                id="myfile"
-                accept="image/*"
-              />
-            </form>
+      {/* BACKDROP */}
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[200] flex justify-center items-center p-4">
 
-            <h2 className="mt-4 text-xl font-semibold">{user.name}</h2>
-            <p className="text-sm">{user.email}</p>
+        {/* CARD */}
+        <div className="relative bg-[#2c2a27] text-white rounded-2xl shadow-xl p-6 w-[90%] max-w-[380px]">
 
-            <div className="mt-6 flex flex-col gap-3">
-              <Link
-                to={"/updateprofile"}
-                onClick={() => setprofile(false)}
-                className="w-full no-underline bg-[#FA9021] text-white py-2 border-2 border-[#000] outline-none rounded-md hover:bg-[#cf781b] transition"
-              >
-                Update User
-              </Link>
-              <button
-                onClick={() => {
-                  logout()
-                  navigate("/signup")
-                  setprofile(false)
-                }}
-                className="w-full bg-red-500 text-white text-xl py-2 border-2 rounded-md shadow hover:bg-red-600 transition"
-              >
-                Logout
-              </button>
-            </div>
+          {/* CLOSE BUTTON */}
+          <ImCross
+            onClick={() => setprofile(false)}
+            className="absolute top-3 right-3 text-xl cursor-pointer hover:text-gray-300 transition"
+          />
+
+          {/* PROFILE IMAGE */}
+          <div className="relative flex justify-center mb-4">
+            <img
+              ref={imgRef}
+              src={displayDp}
+              className="w-28 h-28 rounded-full border-4 border-orange-500 shadow-lg object-cover"
+            />
+            <label
+              htmlFor="dp-file"
+              className="absolute bottom-0 right-[34%] bg-black/80 p-2 rounded-full cursor-pointer hover:scale-110 transition"
+            >
+              <IoIosCamera className="text-2xl text-white" />
+            </label>
+            <input
+              id="dp-file"
+              type="file"
+              ref={inputFile}
+              onChange={UpdateDP}
+              accept="image/*"
+              className="hidden"
+            />
           </div>
+
+          {/* USER NAME + EMAIL */}
+          <h2 className="text-center text-xl font-semibold">{user?.name}</h2>
+          <p className="text-center text-sm text-gray-300 mb-4">{user?.email}</p>
+
+          {/* BUTTONS */}
+          <div className="flex flex-col gap-3 mt-3">
+            <Link
+              to="/updateprofile"
+              onClick={() => setprofile(false)}
+              className="text-center bg-orange-500 text-black font-bold py-2 rounded-lg hover:bg-orange-600 transition"
+            >
+              Update User
+            </Link>
+
+            <button
+              onClick={() => {
+                logout();
+                navigate("/signup");
+                setprofile(false);
+              }}
+              className="bg-red-500 text-white font-bold py-2 rounded-lg hover:bg-red-600 transition"
+            >
+              Logout
+            </button>
+          </div>
+
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Profile
+export default Profile;

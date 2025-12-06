@@ -10,34 +10,15 @@ import { api, assetURL } from "../lib/api";
 import Profile from "./Profile";
 
 const Navbar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { token, setprofile, update, user, profile } = useContext(AuthContext);
+  const { token, user, profile, setprofile, update } = useContext(AuthContext);
   const [userdp, setUserdp] = useState("");
-  const profileimge = useRef(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const profileImgRef = useRef(null);
   const location = useLocation();
 
   // Close sidebar on route change
   useEffect(() => setIsSidebarOpen(false), [location.pathname]);
-
-  // Close on ESC
-  useEffect(() => {
-    const onEsc = (e) => e.key === "Escape" && setIsSidebarOpen(false);
-    window.addEventListener("keydown", onEsc);
-    return () => window.removeEventListener("keydown", onEsc);
-  }, []);
-
-  const navLinks = [
-    { path: "/", label: "Home" },
-    { path: "/about", label: "About Us" },
-    { path: "/contact", label: "Contact Us" },
-    { path: "/booking", label: "Booking" },
-    { path: "/admin", label: "Admin" },
-  ];
-
-  const linkClass = ({ isActive }) =>
-    `text-white font-medium text-base no-underline transition ${
-      isActive ? "text-orange-400" : "hover:text-orange-400"
-    }`;
 
   async function getUser() {
     if (!token) return;
@@ -51,129 +32,169 @@ const Navbar = () => {
     }
   }
 
-  // Fetch user on token/update changes (avoid depending on userdp to prevent loops)
   useEffect(() => {
     getUser();
   }, [update, token]);
 
-  const avatarUrl = userdp ? (userdp.startsWith("http") ? userdp : assetURL(userdp)) : "";
+  const avatarUrl = userdp
+    ? userdp.startsWith("http")
+      ? userdp
+      : assetURL(userdp)
+    : "";
+
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/contact", label: "Contact" },
+    { path: "/booking", label: "Booking" },
+    { path: "/admin", label: "Admin", adminOnly: true },
+  ];
+
+  const linkClass = ({ isActive }) =>
+    `text-white font-medium text-base no-underline transition ${
+      isActive ? "text-orange-400" : "hover:text-orange-400"
+    }`;
 
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}
-        className="w-full relative top-0 left-0 z-20 bg-transparent backdrop-blur-md py-4"
+      {/* NAVBAR */}
+      <header
+        className={`w-full fixed top-0 left-0 z-50 border-b border-white/10 transition-all duration-300
+        ${
+          isSidebarOpen
+            ? "bg-black"
+            : "bg-black/40 backdrop-blur-lg"
+        }`}
       >
-        <div className="relative flex items-center justify-center px-4 sm:px-10 max-w-[1440px] mx-auto">
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between px-4 sm:px-8 py-3">
+          
           {/* Logo */}
-          <Link to="/" className="absolute left-4 sm:left-10 flex items-center gap-2 top-0">
-            <img src={logo} alt="Logo" className="h-12  sm:h-16 w-auto object-contain drop-shadow-md" />
+          <Link to="/">
+            <img src={logo} alt="Logo" className="h-12 sm:h-14 object-contain" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className=" flex nav md:ml-0 relative ml-[200px] items-center gap-8 mt-5">
-            {navLinks.map(({ path, label }) => (
-              <motion.div key={path} whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-                {label !== "Admin" ? (
-                  <NavLink to={path} className={linkClass}>
-                    {label}
-                  </NavLink>
-                ) : user?.IsAdmin ? (
-                  <NavLink to={path} className={linkClass}>
-                    {label}
-                  </NavLink>
-                ) : null}
-              </motion.div>
-            ))}
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-10">
+            {navLinks.map(({ path, label, adminOnly }) =>
+              adminOnly && !user?.IsAdmin ? null : (
+                <NavLink key={path} to={path} className={linkClass}>
+                  {label}
+                </NavLink>
+              )
+            )}
           </nav>
 
-          {/* User profile */}
-          <div className="mycont flex  absolute right-[30px] items-center justify-center gap-4">
-            {token && avatarUrl ? (
+          {/* Right Side */}
+          <div className="flex items-center gap-4">
+
+            {/* Desktop Profile Icon */}
+            {token && avatarUrl && (
               <img
-                ref={profileimge}
+                ref={profileImgRef}
                 src={avatarUrl}
-                onClick={() => {
-                  setprofile(true);
-                }}
-                alt="logo"
-                className="border-5 w-[60px] user-img  cursor-pointer h-[60px] rounded-full"
+                onClick={() => setprofile(true)}
+                className="hidden md:block w-12 h-12 rounded-full cursor-pointer ring-2 ring-orange-400/60 hover:scale-105 transition"
               />
-            ) : null}
+            )}
+
+            {/* Mobile Menu */}
+            <img
+              onClick={() => setIsSidebarOpen(true)}
+              src={assets.menu_icon}
+              className="w-9 md:hidden cursor-pointer"
+              alt="Menu"
+            />
           </div>
-
-          {/* Mobile Menu Icon */}
-          <img
-            onClick={() => setIsSidebarOpen(true)}
-            src={assets.menu_icon}
-            className="menu w-10 cursor-pointer absolute right-4 mb-6 sm:mb-0"
-            alt="Menu"
-          />
         </div>
+      </header>
 
-        {/* Mobile Sidebar */}
-        <AnimatePresence>
-          {isSidebarOpen && (
+      {/* MOBILE SIDEBAR */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <>
+            {/* FULL BLACK BACKDROP */}
             <motion.div
-              className="fixed inset-0 bg-black/90 text-white z-[60] p-6 flex flex-col gap-2"
+              className="fixed inset-0 bg-black z-[70]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+            />
+
+            {/* SIDEBAR PANEL */}
+            <motion.div
+              className="fixed inset-0 bg-black text-white z-[80] flex flex-col"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.28 }}
             >
-              {/* Back Button */}
-              <button
-                onClick={() => setIsSidebarOpen(false)}
-                className="flex items-center gap-3 px-6 py-4 hover:text-orange-500 transition text-left"
-              >
-                <img src={assets.dropdown_icon} className="h-5 w-5 rotate-180 object-contain" alt="Back" />
-                <span className="text-lg font-medium">Back</span>
-              </button>
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+                <h2 className="text-xl font-semibold">Menu</h2>
+                <img
+                  onClick={() => setIsSidebarOpen(false)}
+                  src={assets.dropdown_icon}
+                  className="h-6 w-6 rotate-180 cursor-pointer"
+                  alt="Close"
+                />
+              </div>
 
-              {/* Mobile Nav Links */}
-              {navLinks.map(({ path, label }) => (
-                <NavLink
-                  key={path}
-                  to={path}
-                  className={({ isActive }) =>
-                    `py-3 pl-6 border-t text-lg no-underline transition ${
-                      isActive ? "text-orange-400" : "text-white hover:text-orange-400"
-                    }`
-                  }
-                >
-                  {label}
-                </NavLink>
-              ))}
-
-              <div className=" absolute px-3 py-2 rounded-md bottom-0 w-[90%]  flex items-center  justify-between bg-[#0C101A]">
-                {avatarUrl ? (
-                  <img
-                    src={avatarUrl}
-                    alt="logo"
-                    className="font-bold user-img1  w-[70px] h-[70px] rounded-full "
-                  />
-                ) : (
-                  <div className="w-[70px] h-[70px] rounded-full bg-gray-700" />
+              {/* Links */}
+              <div className="flex flex-col mt-2 text-lg font-medium">
+                {navLinks.map(({ path, label, adminOnly }) =>
+                  adminOnly && !user?.IsAdmin ? null : (
+                    <NavLink
+                      key={path}
+                      to={path}
+                      className={({ isActive }) =>
+                        `block px-6 py-4 border-b border-white/10 ${
+                          isActive ? "text-orange-400" : "hover:text-orange-500"
+                        }`
+                      }
+                    >
+                      {label}
+                    </NavLink>
+                  )
                 )}
-                <motion.button
+              </div>
+
+              {/* Profile Section */}
+              <div className="mt-auto px-6 py-6 bg-black border-t border-white/10 flex items-center justify-between">
+                <div>
+                  {avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      className="w-16 h-16 rounded-full ring-2 ring-orange-400/40 object-cover"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-gray-600" />
+                  )}
+                </div>
+
+                <button
                   onClick={() => {
                     setIsSidebarOpen(false);
                     setprofile(true);
                   }}
-                  type="button"
-                  className="custom-button    py-4  bg-[#e87d0e] text-white font-bold rounded-lg transition-all duration-300 ease-in-out hover:bg-[#d68000]"
+                  className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-black font-bold rounded-lg transition"
                 >
                   Profile
-                </motion.button>
+                </button>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.header>
+          </>
+        )}
+      </AnimatePresence>
 
-      {profile ? <Profile userdp={userdp} profileimge={profileimge} /> : null}
+      {/* PROFILE POPUP */}
+      {profile === true && (
+        <Profile
+          userdp={userdp}
+          setuserdp={setUserdp}
+          profileimge={profileImgRef}
+        />
+      )}
     </>
   );
 };

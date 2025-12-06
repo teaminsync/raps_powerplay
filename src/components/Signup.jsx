@@ -1,326 +1,348 @@
 // src/pages/signup.jsx
-"use client"
+"use client";
 
-import { useState } from "react"
-import "../components/Signup.css"
-import { toast } from "react-toastify"
-import { useNavigate } from "react-router-dom"
-import { api } from "../lib/api"
+import { useState, useRef, useEffect } from "react";
+import "../components/Signup.css";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { api } from "../lib/api";
 
-const SignUp = ({ onSwitchToLogin, onBack }) => {
+const SignUp = ({ onSwitchToLogin }) => {
+  const canvasRef = useRef(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
-  })
+  });
 
-  const navigate = useNavigate()
-  const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: "", color: "", feedback: "" })
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState({
+    score: 0,
+    text: "",
+    color: "",
+    feedback: "",
+  });
 
+  const navigate = useNavigate();
+
+  /* ==========================================
+     RIPPLES — SAME ENGINE AS LOGIN
+  ========================================== */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+
+    let waves = [];
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      waves = waves.filter((w) => w.radius < w.max);
+
+      waves.forEach((w) => {
+        w.radius += w.speed;
+        w.opacity -= w.fade;
+
+        ctx.beginPath();
+        ctx.arc(w.x, w.y, w.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,120,40,${w.opacity})`;
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 30;
+        ctx.shadowColor = "rgba(255,120,40,0.5)";
+        ctx.stroke();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+
+    const createRipple = (x, y) => {
+      waves.push({
+        x,
+        y,
+        radius: 2,
+        speed: 4,
+        opacity: 0.45,
+        fade: 0.002,
+        max: Math.max(canvas.width, canvas.height) * 1.4,
+      });
+    };
+
+    const click = (e) => createRipple(e.clientX, e.clientY);
+    window.addEventListener("click", click);
+
+    return () => window.removeEventListener("click", click);
+  }, []);
+
+  /* ==========================================
+     TYPING RIPPLE
+  ========================================== */
+  const typeRipple = () => {
+    const event = new Event("click");
+    event.clientX = window.innerWidth / 2;
+    event.clientY = window.innerHeight / 2 + 120;
+    window.dispatchEvent(event);
+  };
+
+  /* ==========================================
+     PASSWORD STRENGTH CHECK
+  ========================================== */
   const checkPasswordStrength = (password) => {
-    let score = 0
-    const feedback = []
+    let score = 0;
+    const feedback = [];
 
-    if (password.length >= 8) score += 1
-    else feedback.push("at least 8 characters")
+    if (password.length >= 8) score++;
+    else feedback.push("8+ characters");
 
-    if (/[a-z]/.test(password)) score += 1
-    else feedback.push("lowercase letters")
+    if (/[a-z]/.test(password)) score++;
+    else feedback.push("lowercase");
 
-    if (/[A-Z]/.test(password)) score += 1
-    else feedback.push("uppercase letters")
+    if (/[A-Z]/.test(password)) score++;
+    else feedback.push("uppercase");
 
-    if (/[0-9]/.test(password)) score += 1
-    else feedback.push("numbers")
+    if (/[0-9]/.test(password)) score++;
+    else feedback.push("numbers");
 
-    if (/[^A-Za-z0-9]/.test(password)) score += 1
-    else feedback.push("special characters (!@#$%^&*)")
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    else feedback.push("symbols");
 
-    const strengthLevels = [
+    const levels = [
       { text: "Very Weak", color: "#ef4444" },
       { text: "Weak", color: "#f97316" },
       { text: "Fair", color: "#eab308" },
       { text: "Good", color: "#22c55e" },
       { text: "Strong", color: "#10b981" },
-    ]
+    ];
 
     return {
       score,
-      text: password ? strengthLevels[score]?.text || "Very Strong" : "",
-      color: password ? strengthLevels[score]?.color || "#00cb11ff" : "",
-      feedback: feedback.length > 0 ? `Add: ${feedback.join(", ")}` : "Password is strong!",
-    }
-  }
+      text: levels[score]?.text || "Strong",
+      color: levels[score]?.color || "#10b981",
+      feedback: feedback.length ? `Add: ${feedback.join(", ")}` : "Password looks great!",
+    };
+  };
 
-  const handleInputChange = (e) => {
-    let { name, value } = e.target
+  /* ==========================================
+      INPUT HANDLER
+  ========================================== */
+  const handleChange = (e) => {
+    typeRipple();
 
-    if (name === "name") {
-      value = value.replace(/[^a-zA-Z\s]/g, "")
-    } else if (name === "phone") {
-      value = value.replace(/[^0-9]/g, "").slice(0, 10)
-    } else if (name === "email") {
-      value = value.replace(/[^a-zA-Z0-9@._-]/g, "")
-    }
+    const { name, value } = e.target;
+    let formatted = value;
 
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    if (name === "name") formatted = formatted.replace(/[^a-zA-Z\s]/g, "");
+    if (name === "phone") formatted = formatted.replace(/[^0-9]/g, "").slice(0, 10);
+    if (name === "email") formatted = formatted.replace(/[^a-zA-Z0-9@._-]/g, "");
 
     if (name === "password") {
-      const strength = checkPasswordStrength(value)
-      setPasswordStrength(strength)
+      setPasswordStrength(checkPasswordStrength(formatted));
     }
 
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }))
-    }
-  }
+    setFormData((prev) => ({ ...prev, [name]: formatted }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
 
-  const validateForm = () => {
-    const newErrors = {}
+  /* ==========================================
+     VALIDATION
+  ========================================== */
+  const validate = () => {
+    const e = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters"
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
-      newErrors.name = "Name can only contain letters and spaces"
-    }
+    if (!formData.name.trim()) e.name = "Name required";
+    if (!formData.email) e.email = "Email required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+      e.email = "Invalid email format";
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address"
-    }
+    if (!formData.phone || formData.phone.length !== 10)
+      e.phone = "Phone must be 10 digits";
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required"
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = "Phone number must be exactly 10 digits"
-    }
+    if (!formData.password) e.password = "Password required";
+    else if (passwordStrength.score < 3)
+      e.password = "Password too weak";
 
-    if (!formData.password) {
-      newErrors.password = "Password is required"
-    } else if (passwordStrength.score < 3) {
-      newErrors.password = "Password is too weak. Please create a stronger password"
-    }
+    if (!formData.confirmPassword)
+      e.confirmPassword = "Confirm password";
+    else if (formData.password !== formData.confirmPassword)
+      e.confirmPassword = "Passwords do not match";
 
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password"
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match"
-    }
+    return e;
+  };
 
-    return newErrors
-  }
-
-  async function checkUserExists(email) {
+  /* ==========================================
+     API CHECK
+  ========================================== */
+  const checkUserExists = async (email) => {
     try {
-      if (!email) return false
-      const { data } = await api.get(`/user/UserExistOrNot/${encodeURIComponent(email)}`)
-      return Array.isArray(data) && data.length > 0
+      const { data } = await api.get(`/user/UserExistOrNot/${encodeURIComponent(email)}`);
+      return Array.isArray(data) && data.length > 0;
     } catch {
-      return false
+      return false;
     }
-  }
+  };
 
+  /* ==========================================
+     SUBMIT
+  ========================================== */
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const newErrors = validateForm()
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
-    }
+    const v = validate();
+    if (Object.keys(v).length) return setErrors(v);
 
-    setLoading(true)
     try {
-      const exists = await checkUserExists(formData.email)
-      if (exists) {
-        toast.error("User already exists")
-        return
-      }
+      const exists = await checkUserExists(formData.email);
+      if (exists) return toast.error("User already exists");
 
-      const { data } = await api.post("/user/register", {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        password: formData.password,
-      })
-
-      if (data?.success) {
-        toast.success("Sign up successful! Please sign in.")
-        navigate("/login")
-      } else {
-        toast.error(data?.message || "Sign up failed")
+      const { data } = await api.post("/user/register", formData);
+      if (data.success) {
+        toast.success("Account created! Login now.");
+        navigate("/login");
       }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message || "Sign up failed")
-    } finally {
-      setLoading(false)
+    } catch {
+      toast.error("Signup failed");
     }
-  }
+  };
 
   return (
-    <div className="signup-page">
-      {/* Animated Background */}
-      <div className="signup-animated-background">
-        <div className="signup-bg-circle signup-bg-circle-1"></div>
-        <div className="signup-bg-circle signup-bg-circle-2"></div>
-        <div className="signup-bg-circle signup-bg-circle-3"></div>
-      </div>
+    <div className="signup-wrapper">
+      
+      {/* RIPPLE BACKGROUND */}
+      <canvas ref={canvasRef} id="signupRipple"></canvas>
 
-      <div className="signup-container">
-        <div className="signup-card">
-          <button className="signup-back-btn" onClick={onBack}>
-            <span>←</span> Back to Booking
-          </button>
+      <div className="signup-card">
 
-          <div className="signup-header">
-            <div className="signup-logo">
-              <span className="signup-logo-text">Raps Powerplay</span>
-            </div>
-            <h2 className="signup-title">Create Account</h2>
-            <p className="signup-subtitle">Join the ultimate gaming experience</p>
+        <h1 className="signup-brand">RAPS POWERPLAY</h1>
+        <h2 className="signup-title">Create Account</h2>
+        <p className="signup-subtitle">Start your gaming journey</p>
+
+        <form onSubmit={handleSubmit} className="signup-form">
+
+          {/* NAME */}
+          <div className="signup-field">
+            <label>Name</label>
+            <input
+              name="name"
+              className="signup-input"
+              placeholder="Your name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            {errors.name && <p className="signup-error">{errors.name}</p>}
           </div>
 
-          <form onSubmit={handleSubmit} className="signup-form">
-            <div className="signup-form-group">
-              <div className="signup-input-wrapper">
-                <span className="signup-input-icon">👤</span>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Full Name (letters only)"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className={errors.name ? "signup-input error" : "signup-input"}
-                  maxLength="50"
-                />
-              </div>
-              {errors.name && <span className="signup-error-text">{errors.name}</span>}
-            </div>
+          {/* EMAIL */}
+          <div className="signup-field">
+            <label>Email</label>
+            <input
+              name="email"
+              className="signup-input"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {errors.email && <p className="signup-error">{errors.email}</p>}
+          </div>
 
-            <div className="signup-form-group">
-              <div className="signup-input-wrapper">
-                <span className="signup-input-icon">📧</span>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={errors.email ? "signup-input error" : "signup-input"}
-                />
-              </div>
-              {errors.email && <span className="signup-error-text">{errors.email}</span>}
-            </div>
+          {/* PHONE */}
+          <div className="signup-field">
+            <label>Phone</label>
+            <input
+              name="phone"
+              className="signup-input"
+              placeholder="10-digit number"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+            {errors.phone && <p className="signup-error">{errors.phone}</p>}
+          </div>
 
-            <div className="signup-form-group">
-              <div className="signup-input-wrapper">
-                <span className="signup-input-icon">📱</span>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number (10 digits)"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className={errors.phone ? "signup-input error" : "signup-input"}
-                  maxLength="10"
-                />
-              </div>
-              {errors.phone && <span className="signup-error-text">{errors.phone}</span>}
-            </div>
+          {/* PASSWORD */}
+          <div className="signup-field">
+            <label>Password</label>
 
-            <div className="signup-form-group">
-              <div className="signup-input-wrapper">
-                <span className="signup-input-icon">🔒</span>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className={errors.password ? "signup-input error" : "signup-input"}
-                />
-                <button type="button" className="signup-password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? "🙈" : "👁️"}
-                </button>
-              </div>
-              {formData.password && (
-                <div className="signup-password-strength">
-                  <div className="signup-strength-bar">
-                    <div
-                      className="signup-strength-fill"
-                      style={{
-                        width: `${(passwordStrength.score / 5) * 100}%`,
-                        backgroundColor: passwordStrength.color,
-                      }}
-                    ></div>
-                  </div>
-                  <div className="signup-strength-text" style={{ color: passwordStrength.color }}>
-                    {passwordStrength.text}
-                  </div>
-                  <div className="signup-strength-feedback">{passwordStrength.feedback}</div>
-                </div>
-              )}
-              {errors.password && <span className="signup-error-text">{errors.password}</span>}
-            </div>
-
-            <div className="signup-form-group">
-              <div className="signup-input-wrapper">
-                <span className="signup-input-icon">🔐</span>
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className={errors.confirmPassword ? "signup-input error" : "signup-input"}
-                />
-                <button
-                  type="button"
-                  className="signup-password-toggle"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? "🙈" : "👁️"}
-                </button>
-              </div>
-              {errors.confirmPassword && <span className="signup-error-text">{errors.confirmPassword}</span>}
-            </div>
-
-            <button type="submit" className="signup-btn" disabled={loading}>
-              {loading ? (
-                <div className="signup-loading-content">
-                  <div className="signup-spinner"></div>
-                  Creating Account...
-                </div>
-              ) : (
-                <>
-                  <span className="signup-btn-icon">🚀</span>
-                  Create Account
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="signup-footer">
-            <p>
-              Already have an account?
-              <button onClick={onSwitchToLogin} className="signup-link-btn">
-                Sign In
+            <div className="password-wrap">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className="signup-input"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <button type="button" className="toggle" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? "Hide" : "Show"}
               </button>
-            </p>
+            </div>
+
+            {/* Password Strength */}
+            {formData.password && (
+              <div className="signup-strength-box">
+                <div className="signup-strength-bar">
+                  <div
+                    className="signup-strength-fill"
+                    style={{
+                      width: `${(passwordStrength.score / 5) * 100}%`,
+                      backgroundColor: passwordStrength.color,
+                    }}
+                  ></div>
+                </div>
+                <p className="signup-strength-text" style={{ color: passwordStrength.color }}>
+                  {passwordStrength.text}
+                </p>
+                <p className="signup-strength-feedback">{passwordStrength.feedback}</p>
+              </div>
+            )}
+
+            {errors.password && <p className="signup-error">{errors.password}</p>}
           </div>
-        </div>
+
+          {/* CONFIRM PASSWORD */}
+          <div className="signup-field">
+            <label>Confirm Password</label>
+
+            <div className="password-wrap">
+              <input
+                name="confirmPassword"
+                type={showConfirm ? "text" : "password"}
+                className="signup-input"
+                placeholder="••••••••"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+              <button type="button" className="toggle" onClick={() => setShowConfirm(!showConfirm)}>
+                {showConfirm ? "Hide" : "Show"}
+              </button>
+            </div>
+
+            {errors.confirmPassword && <p className="signup-error">{errors.confirmPassword}</p>}
+          </div>
+
+          <button className="signup-btn" type="submit">Create Account</button>
+        </form>
+
+        <p className="signup-footer">
+          Already have an account?
+          <button onClick={onSwitchToLogin} className="signup-link">Sign In</button>
+        </p>
+
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;
