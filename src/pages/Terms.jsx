@@ -91,43 +91,43 @@ const Terms = () => {
 
             {/* 🔒 NEW LEGALLY CRITICAL SECTIONS */}
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">12. Bookings via Google Forms & Offline Channels</h3>
+            <h3 className="text-2xl font-semibold mt-8 mb-4">11. Bookings via Google Forms & Offline Channels</h3>
             <p className="text-lg mb-6">
               Any booking made via Google Forms, WhatsApp, phone calls, email, or any non-website medium shall be deemed legally binding. Submission of such booking constitutes full acceptance of these Terms.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">13. Mandatory Offline Agreement</h3>
+            <h3 className="text-2xl font-semibold mt-8 mb-4">12. Mandatory Offline Agreement</h3>
             <p className="text-lg mb-6">
               For long-term or high-value rentals, a physical agreement may be issued. Refusal to sign does not invalidate the booking. Usage, payment, or possession of equipment shall be treated as implied acceptance.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">14. Fixed-Tenure Lock-In</h3>
+            <h3 className="text-2xl font-semibold mt-8 mb-4">13. Fixed-Tenure Lock-In</h3>
             <p className="text-lg mb-6">
               Rentals booked for a fixed duration (monthly, quarterly, 6 months, etc.) are non-cancellable and non-reducible once commenced.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">15. Early Termination Liability</h3>
+            <h3 className="text-2xl font-semibold mt-8 mb-4">14. Early Termination Liability</h3>
             <p className="text-lg mb-6">
               If the customer discontinues usage before the agreed tenure, they remain liable to pay the full rental amount for the entire committed period.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">16. Payment Default & Recovery</h3>
+            <h3 className="text-2xl font-semibold mt-8 mb-4">15. Payment Default & Recovery</h3>
             <p className="text-lg mb-6">
               Non-payment shall be treated as breach of contract. RAPS Powerplay may suspend service, recover equipment, and initiate legal recovery if required.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">17. Digital & Implied Consent</h3>
+            <h3 className="text-2xl font-semibold mt-8 mb-4">16. Digital & Implied Consent</h3>
             <p className="text-lg mb-6">
               Digital actions including form submission, payments, delivery acceptance, or WhatsApp confirmation constitute valid electronic consent under Indian Contract Law.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">18. Governing Law & Jurisdiction</h3>
+            <h3 className="text-2xl font-semibold mt-8 mb-4">17. Governing Law & Jurisdiction</h3>
             <p className="text-lg mb-6">
               These Terms shall be governed by the Indian Contract Act, 1872, with exclusive jurisdiction in courts of Maharashtra.
             </p>
 
 
-             <h3 className="text-2xl font-semibold mt-8 mb-4">11. Contact</h3>
+             <h3 className="text-2xl font-semibold mt-8 mb-4">18. Contact</h3>
             <ul className="list-disc ml-6 text-lg mb-6">
               <li>Email: support@rapspowerplay.com</li>
               <li>Phone: +91 90822 01911</li>
