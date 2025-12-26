@@ -24,111 +24,105 @@ const Terms = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
           viewport={{ once: true }}
-          style={{ lineHeight: "1.8" }}
+          style={{ lineHeight: "1.9" }}
           className="flex flex-col justify-center gap-10 md:w-3/4 text-white mx-auto"
         >
-          <div className="space-y-8">
-            <p className="my-6 text-lg">
-              <b>Please read these Terms and Conditions carefully</b> before accessing, using, or obtaining any materials, information, products, or services. By accessing any RAPS Powerplay platform (including our website, mobile interface, Google Forms, WhatsApp, phone calls, or direct communication services), you agree to be bound by these Terms. If you do not accept all of these Terms, you may not use our services.
+          <div className="space-y-10">
+
+            <p className="text-lg">
+              <b>Please read these Terms and Conditions carefully.</b> These Terms and Conditions (“Terms”) govern your access to, interaction with, and use of any services, products, platforms, or communication channels operated by RAPS Powerplay, including but not limited to its website, mobile interfaces, Google Forms, WhatsApp communications, telephonic conversations, offline discussions, or any other mode of engagement. By accessing, booking, paying for, receiving, or using any service provided by RAPS Powerplay, you expressly acknowledge that you have read, understood, and agreed to be legally bound by these Terms. If you do not agree to these Terms in their entirety, you must immediately discontinue use of our services.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">1. Overview</h3>
-            <p className="text-lg mb-6">
-              RAPS Powerplay provides PlayStation 5 and gaming equipment rentals for home-based and approved private use. Services may include short-term and long-term rental plans. All services are subject to availability and these Terms.
+            <h3 className="text-2xl font-semibold">1. Overview</h3>
+            <p className="text-lg">
+              RAPS Powerplay is engaged in the business of providing PlayStation 5 consoles and related gaming equipment on a rental basis for home-based and other approved private usage. The services offered may include short-term rentals, long-term rentals, and fixed-tenure commitments, subject to availability and internal approval. All services rendered by RAPS Powerplay are governed exclusively by these Terms, which form a legally binding agreement between RAPS Powerplay and the customer.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">2. Booking & Payment</h3>
-            <p className="text-lg mb-6">
-              All bookings are confirmed only upon full or agreed partial payment. Pricing may vary based on duration, demand, membership status, or custom agreements.
+            <h3 className="text-2xl font-semibold">2. Booking & Payment</h3>
+            <p className="text-lg">
+              All bookings, irrespective of the mode through which they are initiated, shall be deemed confirmed only upon receipt of full payment or such partial payment as may be expressly agreed upon by RAPS Powerplay. Pricing may vary based on rental duration, demand fluctuations, membership status, promotional offers, or custom commercial arrangements. RAPS Powerplay reserves the absolute right to revise pricing or decline bookings at its discretion.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">3. Usage & Conduct</h3>
-            <ul className="list-disc ml-6 text-lg mb-6">
-              <li>Equipment must be used strictly for personal or agreed private use.</li>
-              <li>Subleasing, resale, or commercial usage without written approval is prohibited.</li>
-              <li>User is responsible for safety, power conditions, and care of equipment.</li>
-              <li>Damage, loss, or theft shall be fully chargeable.</li>
+            <h3 className="text-2xl font-semibold">3. Usage & Conduct</h3>
+            <ul className="list-disc ml-6 text-lg">
+              <li>The rented equipment shall be used strictly for personal or otherwise explicitly approved private use.</li>
+              <li>Any form of subleasing, resale, public usage, or commercial exploitation without prior written consent is strictly prohibited.</li>
+              <li>The customer shall be solely responsible for ensuring proper electrical conditions, safe handling, and secure storage of the equipment.</li>
+              <li>Any damage, loss, theft, or malfunction arising due to misuse, negligence, or external factors shall be chargeable in full.</li>
             </ul>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">4. Cancellation & Rescheduling</h3>
-            <ul className="list-disc ml-6 text-lg mb-6">
-              <li>Short-term rentals may allow limited cancellation as communicated.</li>
-              <li>Fixed-tenure rentals are governed by Sections 14 & 15.</li>
-            </ul>
-
-            <h3 className="text-2xl font-semibold mt-8 mb-4">5. Delivery & Pickup</h3>
-            <ul className="list-disc ml-6 text-lg mb-6">
-              <li>Rental period begins from equipment handover.</li>
-              <li>Delays may incur additional charges.</li>
-            </ul>
-
-            <h3 className="text-2xl font-semibold mt-8 mb-4">6. Limited Access & Availability</h3>
-            <p className="text-lg mb-6">
-              Availability is first-come-first-served. RAPS Powerplay may refuse service if operational or safety risks exist.
+            <h3 className="text-2xl font-semibold">4. Cancellation & Rescheduling</h3>
+            <p className="text-lg">
+              Certain short-term rentals may allow limited cancellation or rescheduling, subject to timelines and conditions communicated by RAPS Powerplay. However, rentals undertaken for fixed tenures or extended durations shall be governed strictly by Sections 13 and 14 of these Terms and shall not be eligible for discretionary cancellation.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">7. User Verification</h3>
-            <p className="text-lg mb-6">
-              Valid government-issued ID is mandatory. Failure to verify identity may result in denial or suspension of service.
+            <h3 className="text-2xl font-semibold">5. Delivery & Pickup</h3>
+            <p className="text-lg">
+              The rental period shall commence from the moment the equipment is handed over to the customer or their authorized representative. Any delay in pickup, return, or handover may attract additional charges. RAPS Powerplay shall not be responsible for delays caused by customer-side unavailability.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">8. Intellectual Property</h3>
-            <p className="text-lg mb-6">
-              All branding, media, and content belong exclusively to RAPS Powerplay.
+            <h3 className="text-2xl font-semibold">6. Limited Access & Availability</h3>
+            <p className="text-lg">
+              All bookings are processed on a first-come, first-served basis and are subject to inventory availability. RAPS Powerplay reserves the right to refuse or cancel service where operational constraints, safety risks, or policy violations are identified.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">9. Arbitration & Disputes</h3>
-            <p className="text-lg mb-6">
-              All disputes shall be resolved through individual arbitration under Indian law. No class actions permitted.
+            <h3 className="text-2xl font-semibold">7. User Verification</h3>
+            <p className="text-lg">
+              Customers are mandatorily required to provide valid, government-issued identification for verification purposes. Failure to provide or validate such documentation may result in denial, suspension, or termination of service without liability.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">10. Modifications</h3>
-            <p className="text-lg mb-6">
-              RAPS Powerplay may update these Terms at any time. Continued use constitutes acceptance.
+            <h3 className="text-2xl font-semibold">8. Intellectual Property</h3>
+            <p className="text-lg">
+              All intellectual property, including but not limited to logos, branding, visual assets, written content, and marketing materials, are the exclusive property of RAPS Powerplay. Unauthorized usage, reproduction, or distribution is strictly prohibited.
             </p>
 
-           
-
-            {/* 🔒 NEW LEGALLY CRITICAL SECTIONS */}
-
-            <h3 className="text-2xl font-semibold mt-8 mb-4">11. Bookings via Google Forms & Offline Channels</h3>
-            <p className="text-lg mb-6">
-              Any booking made via Google Forms, WhatsApp, phone calls, email, or any non-website medium shall be deemed legally binding. Submission of such booking constitutes full acceptance of these Terms.
+            <h3 className="text-2xl font-semibold">9. Arbitration & Disputes</h3>
+            <p className="text-lg">
+              Any dispute, claim, or controversy arising out of or relating to these Terms shall be resolved through individual arbitration in accordance with applicable Indian laws. Customers expressly waive any right to initiate or participate in class actions or collective proceedings.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">12. Mandatory Offline Agreement</h3>
-            <p className="text-lg mb-6">
-              For long-term or high-value rentals, a physical agreement may be issued. Refusal to sign does not invalidate the booking. Usage, payment, or possession of equipment shall be treated as implied acceptance.
+            <h3 className="text-2xl font-semibold">10. Modifications</h3>
+            <p className="text-lg">
+              RAPS Powerplay reserves the unilateral right to amend, update, or modify these Terms at any time without prior notice. Continued use of services following such modifications shall constitute deemed acceptance of the revised Terms.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">13. Fixed-Tenure Lock-In</h3>
-            <p className="text-lg mb-6">
-              Rentals booked for a fixed duration (monthly, quarterly, 6 months, etc.) are non-cancellable and non-reducible once commenced.
+            <h3 className="text-2xl font-semibold">11. Bookings via Google Forms & Offline Channels</h3>
+            <p className="text-lg">
+              Any booking initiated through Google Forms, WhatsApp, telephonic communication, email, or any non-website channel shall be considered legally valid and binding. Submission of booking details through such channels shall constitute unconditional acceptance of these Terms.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">14. Early Termination Liability</h3>
-            <p className="text-lg mb-6">
-              If the customer discontinues usage before the agreed tenure, they remain liable to pay the full rental amount for the entire committed period.
+            <h3 className="text-2xl font-semibold">12. Mandatory Offline Agreement</h3>
+            <p className="text-lg">
+              For long-term or high-value rentals, RAPS Powerplay may issue a physical rental agreement. Refusal or failure to sign such agreement shall not invalidate the booking, and the customer’s continued usage, possession, or payment shall be deemed implied consent.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">15. Payment Default & Recovery</h3>
-            <p className="text-lg mb-6">
-              Non-payment shall be treated as breach of contract. RAPS Powerplay may suspend service, recover equipment, and initiate legal recovery if required.
+            <h3 className="text-2xl font-semibold">13. Fixed-Tenure Lock-In</h3>
+            <p className="text-lg">
+              Rentals booked for a fixed tenure, including monthly or multi-month plans, shall be strictly non-cancellable and non-reducible once the rental period has commenced.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">16. Digital & Implied Consent</h3>
-            <p className="text-lg mb-6">
-              Digital actions including form submission, payments, delivery acceptance, or WhatsApp confirmation constitute valid electronic consent under Indian Contract Law.
+            <h3 className="text-2xl font-semibold">14. Early Termination Liability</h3>
+            <p className="text-lg">
+              In the event the customer discontinues service prior to completion of the agreed tenure, the customer shall remain fully liable to pay the entire rental consideration for the committed period without deduction or waiver.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">17. Governing Law & Jurisdiction</h3>
-            <p className="text-lg mb-6">
-              These Terms shall be governed by the Indian Contract Act, 1872, with exclusive jurisdiction in courts of Maharashtra.
+            <h3 className="text-2xl font-semibold">15. Payment Default & Recovery</h3>
+            <p className="text-lg">
+              Any failure to make timely payments shall constitute a material breach of contract. RAPS Powerplay reserves the right to suspend service, recover equipment, and initiate appropriate legal or recovery proceedings.
             </p>
 
+            <h3 className="text-2xl font-semibold">16. Digital & Implied Consent</h3>
+            <p className="text-lg">
+              Digital actions including form submissions, payment confirmations, delivery acceptance, or written acknowledgements shall constitute valid electronic consent under the Indian Contract Act, 1872.
+            </p>
 
-             <h3 className="text-2xl font-semibold mt-8 mb-4">18. Contact</h3>
-            <ul className="list-disc ml-6 text-lg mb-6">
+            <h3 className="text-2xl font-semibold">17. Governing Law & Jurisdiction</h3>
+            <p className="text-lg">
+              These Terms shall be governed by and construed in accordance with the laws of India, with exclusive jurisdiction vested in the courts of Maharashtra.
+            </p>
+
+            <h3 className="text-2xl font-semibold">18. Contact</h3>
+            <ul className="list-disc ml-6 text-lg">
               <li>Email: support@rapspowerplay.com</li>
               <li>Phone: +91 90822 01911</li>
               <li>Location: Mumbai, India</li>
@@ -137,6 +131,7 @@ const Terms = () => {
             <p className="text-sm italic text-gray-400">
               Last Updated: August 2025
             </p>
+
           </div>
         </motion.div>
       </div>
