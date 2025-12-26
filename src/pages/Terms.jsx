@@ -87,12 +87,7 @@ const Terms = () => {
               RAPS Powerplay may update these Terms at any time. Continued use constitutes acceptance.
             </p>
 
-            <h3 className="text-2xl font-semibold mt-8 mb-4">11. Contact</h3>
-            <ul className="list-disc ml-6 text-lg mb-6">
-              <li>Email: support@rapspowerplay.com</li>
-              <li>Phone: +91 93217 32794</li>
-              <li>Location: Mumbai, India</li>
-            </ul>
+           
 
             {/* 🔒 NEW LEGALLY CRITICAL SECTIONS */}
 
@@ -131,8 +126,16 @@ const Terms = () => {
               These Terms shall be governed by the Indian Contract Act, 1872, with exclusive jurisdiction in courts of Maharashtra.
             </p>
 
+
+             <h3 className="text-2xl font-semibold mt-8 mb-4">11. Contact</h3>
+            <ul className="list-disc ml-6 text-lg mb-6">
+              <li>Email: support@rapspowerplay.com</li>
+              <li>Phone: +91 90822 01911</li>
+              <li>Location: Mumbai, India</li>
+            </ul>
+
             <p className="text-sm italic text-gray-400">
-              Last Updated: December 2025
+              Last Updated: August 2025
             </p>
           </div>
         </motion.div>
