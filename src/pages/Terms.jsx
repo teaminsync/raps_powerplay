@@ -88,7 +88,7 @@ const Terms = () => {
 
             <h3 className="text-2xl font-semibold">11. Bookings via Google Forms & Offline Channels</h3>
             <p className="text-lg">
-              Any booking initiated through Google Forms, WhatsApp, telephonic communication, email, or any non-website channel shall be considered legally valid and binding. Submission of booking details through such channels shall constitute unconditional acceptance of these Terms.
+              Any booking initiated through Google Forms, WhatsApp, telephonic communication, email, or any non-website channel shall be considered legally valid and binding. Submission of booking details through such channels shall constitute unconditional acceptance of these Terms.For operational convenience, RAPS Powerplay may utilize third-party digital forms, including Google Forms, as a booking and information collection mechanism. The specific access link to such forms may be shared separately with customers through official communication channels and does not affect the enforceability of these Terms.
             </p>
 
             <h3 className="text-2xl font-semibold">12. Mandatory Offline Agreement</h3>
